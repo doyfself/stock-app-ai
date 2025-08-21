@@ -1,15 +1,16 @@
-import { calculateMA } from './util';
 import type { StockKlineChartChildProps } from './types';
 import klineConfig from './config';
 export default function App({
-  data,
+  maData,
   coordinateX,
   mapToSvg,
-}: Pick<StockKlineChartChildProps, 'data' | 'coordinateX' | 'mapToSvg'>) {
+}: Pick<StockKlineChartChildProps, 'coordinateX' | 'mapToSvg'> & {
+  maData: number[][]; // MA数据
+}) {
   return (
     <g>
-      {klineConfig.averageLineConfig.map((item) => {
-        const maList = calculateMA(data, item.period);
+      {klineConfig.averageLineConfig.map((item, i) => {
+        const maList = maData[i];
         let points = '';
         maList.forEach((item, index) => {
           if (item != -1) {

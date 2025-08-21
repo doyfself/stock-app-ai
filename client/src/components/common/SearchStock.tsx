@@ -27,17 +27,22 @@ export default function SearchStock() {
     }, 100);
   };
   const resultItemClick = (index: number) => {
-    const code = result[index].slice(2, 8);
+    const code = result[index].slice(0, 8);
     navigate(`/kline/${code}`);
     setOpen(false);
   };
 
   return (
     <>
-      <Button type="primary" icon={<SearchOutlined />} onClick={openDrawer}>
+      <Button shape="round" icon={<SearchOutlined />} onClick={openDrawer}>
         Search
       </Button>
-      <Drawer title="搜索" open={open} maskClosable={true}>
+      <Drawer
+        title="搜索"
+        open={open}
+        maskClosable={true}
+        onClose={() => setOpen(false)}
+      >
         <Input
           placeholder="输入代码或名称"
           value={searchWord}

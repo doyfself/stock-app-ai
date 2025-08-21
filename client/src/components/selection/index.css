@@ -1,0 +1,26 @@
+.selection-list {
+    border: 1px solid #d9d9d9;
+    width: 200px;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    color: #000;
+}
+.selection-list-header {
+    background: #EFF3F6;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    padding: 5px;
+}
+.selection-list ul li {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    border-bottom: 1px solid #d9d9d9;
+    font-size: 13px;
+}
+.selection-list ul li.active{
+    background: #D8E9FE;
+}

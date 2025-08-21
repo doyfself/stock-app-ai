@@ -9,12 +9,11 @@
 export function debounce<F extends (...args: Parameters<F>) => ReturnType<F>>(
   func: F,
   wait: number,
-  immediate = false
+  immediate = false,
 ): (...args: Parameters<F>) => void {
   let timeout: NodeJS.Timeout | null = null;
 
   return function (this: ThisParameterType<F>, ...args: Parameters<F>): void {
-
     // 清除已有定时器
     if (timeout) {
       clearTimeout(timeout);
@@ -52,7 +51,7 @@ export function debounce<F extends (...args: Parameters<F>) => ReturnType<F>>(
 export function throttle<F extends (...args: Parameters<F>) => ReturnType<F>>(
   func: F,
   wait: number,
-  trailing = false
+  trailing = false,
 ): (...args: Parameters<F>) => void {
   let timeout: NodeJS.Timeout | null = null;
   let lastExecuteTime = 0;
@@ -81,3 +80,78 @@ export function throttle<F extends (...args: Parameters<F>) => ReturnType<F>>(
     }
   };
 }
+
+/**
+ * 动态给股票代码添加市场前缀（如 SH、SZ）
+ * @param code 原始股票代码（纯数字）
+ * @returns 带前缀的股票代码（如 SH600000、SZ000001）
+ * @throws 当代码不符合规则时抛出错误
+ */
+export const addStockCodePrefix = (code: string): string => {
+  // 去除可能的空格
+  const cleanCode = code.trim();
+
+  // 验证代码是否为纯数字
+  if (!/^\d+$/.test(cleanCode)) {
+    throw new Error(`无效的股票代码：${code}，必须为纯数字`);
+  }
+
+  // 沪市主板：60开头（6位数字）
+  if (/^60[0-9]{4}$/.test(cleanCode)) {
+    return `SH${cleanCode}`;
+  }
+
+  // 沪市科创板：688开头（6位数字）
+  if (/^688[0-9]{3}$/.test(cleanCode)) {
+    return `SH${cleanCode}`;
+  }
+
+  // 深市主板：00开头（6位数字）
+  if (/^00[0-9]{4}$/.test(cleanCode)) {
+    return `SZ${cleanCode}`;
+  }
+
+  // 深市创业板：30开头（6位数字）
+  if (/^30[0-9]{4}$/.test(cleanCode)) {
+    return `SZ${cleanCode}`;
+  }
+
+  // 北交所：8开头（6位数字）
+  if (/^8[0-9]{5}$/.test(cleanCode)) {
+    return `BJ${cleanCode}`;
+  }
+
+  // 若不符合以上规则，抛出错误
+  throw new Error(`无法识别的股票代码：${code}，请检查代码是否正确`);
+};
+
+/**
+ * 判断当前时间是否在股票运营时间内（A股市场规则）
+ * @param date 可选参数，指定要检查的日期，默认使用当前时间
+ * @returns boolean 是否在交易时间内
+ */
+export const isInStockTradingTime = (date: Date = new Date()): boolean => {
+  // 1. 检查是否为周末（周六或周日）
+  const day = date.getDay();
+  if (day === 0 || day === 6) {
+    return false;
+  }
+  // 4. 检查具体交易时间段
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const totalMinutes = hours * 60 + minutes;
+
+  // 早盘时间: 9:30 - 11:30
+  const morningStart = 9 * 60 + 15; // 570
+  const morningEnd = 11 * 60 + 30; // 690
+
+  // 午盘时间: 13:00 - 15:00
+  const afternoonStart = 13 * 60; // 780
+  const afternoonEnd = 15 * 60; // 900
+
+  // 判断是否在早盘或午盘时间段内
+  return (
+    (totalMinutes >= morningStart && totalMinutes <= morningEnd) ||
+    (totalMinutes >= afternoonStart && totalMinutes <= afternoonEnd)
+  );
+};

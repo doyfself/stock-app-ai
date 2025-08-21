@@ -1,17 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Flex, Table } from 'antd';
 import type { TableColumnsType, TableProps } from 'antd';
+import {
+  getSelectionApi,
+  addSelectionApi,
+  deleteSelectionApi,
+  type SelectionItem,
+} from '@/apis/api';
 
 type TableRowSelection<T extends object = object> =
   TableProps<T>['rowSelection'];
-
-interface DataType {
-  key: React.Key;
-  code: string;
-  name: string;
-  increase: string;
-  price: number;
-}
 
 const columns: TableColumnsType<DataType> = [
   { title: '代码', dataIndex: 'code' },
@@ -23,6 +21,15 @@ const columns: TableColumnsType<DataType> = [
 const dataSource: DataType[] = [];
 
 const App: React.FC = () => {
+  const [data, setData] = useState<SelectionItem[]>([]);
+  useEffect(() => {
+    // 获取自选列表
+    getSelectionApi().then((response) => {
+      if (response && response.data) {
+        setData(response.data);
+      }
+    });
+  }, []);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
   const addSelection = () => {};

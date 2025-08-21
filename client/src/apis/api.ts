@@ -1,9 +1,10 @@
 import request from '../utils/request';
 type QueryStockByWordResponse = {
-    代码:string;
-    名称:string;
+  代码: string;
+  名称: string;
 }[];
-export const queryStockByWordApi = (w:string) => request.get<QueryStockByWordResponse>('/search?w=' + w);
+export const queryStockByWordApi = (w: string) =>
+  request.get<QueryStockByWordResponse>('/search?w=' + w);
 // 定义 K 线数据类型接口
 export interface KlineDataItem {
   date: string; // 日期格式：YYYY-MM-DD
@@ -12,5 +13,94 @@ export interface KlineDataItem {
   low: number; // 最低价
   close: number; // 收盘价
   volume: number; // 成交量
+  percent: number; // 涨跌幅
+  turnoverrate: number; // 换手率
 }
-export const getKlineDataApi = (code: string, period: string) => request.get<KlineDataItem[]>(`/kline?code=${code}&period=${period}`)
+export const getKlineDataApi = (code: string, period: string) =>
+  request.get<KlineDataItem[]>(`/kline?code=${code}&period=${period}`);
+// 个股详情
+export interface KlineDetailsType {
+  name: string; // 股票名称
+  code: string; // 股票代码
+  current: number; // 当前价格
+  pe_lyr: number; // 市盈率（TTM）
+  pe_ttm: number; // 市盈率（静态）
+  pe_forecast: number; // 市盈率（预测）
+  percent: number; // 涨跌幅
+  market_capital: number; // 市值
+  limit_up: number; // 涨停价
+  limit_down: number; // 跌停价
+  last_close: number; // 昨收
+  open: number; // 开盘价
+  high: number; // 最高价
+  low: number; // 最低价
+  volume_ratio: number; // 量比
+  turnover_rate: number; // 换手率
+}
+export const getKlineDetailsApi = (code: string) =>
+  request.get<KlineDetailsType>(`/stock_details?code=${code}`);
+
+// 获取自选列表
+export interface SelectionItem {
+  code: string; // 股票代码
+  name: string; // 股票名称
+  color: string; // 股票颜色
+  remark: string; // 备注
+}
+export const getSelectionApi = () =>
+  request.get<SelectionItem[]>('/get_selection');
+
+export type SelectionDetailsItem = Pick<
+  KlineDetailsType,
+  'code' | 'current' | 'name' | 'percent'
+>;
+export const getSelectionDetails = (symbols: string) =>
+  request.get<SelectionDetailsItem[]>(
+    '/get_selection_detail?symbols=' + symbols,
+  );
+
+// 添加自选
+export const addSelectionApi = (
+  code: string,
+  name: string,
+  color: string = '',
+  remark: string = '',
+) => request.post<boolean>('/add_selection', { code, name, color, remark });
+// 删除自选
+export const deleteSelectionApi = (code: string) =>
+  request.post<boolean>('/delete_selection', { code });
+
+// 检查自选是否存在
+export const isSelectionExistsApi = (code: string) =>
+  request.get<boolean>('/is_selection_exists?code=' + code);
+
+// 获取自选三省列表
+export interface PositionReviewItem {
+  id: string; // 股票代码
+  code: string; // 股票名称
+  title: string;
+  date: string; // 股票日期
+  description: string; // 描述
+}
+export const getPositionReviewApi = () =>
+  request.get<PositionReviewItem[]>('/get_position_review');
+
+export const getSinglePositionReviewApi = (id: string) =>
+  request.get<PositionReviewItem>('/get_single_position_review?id=' + id);
+
+// 添加自选
+export const addPositionReviewApi = (
+  code: string,
+  title: string,
+  date: string = '',
+  description: string = '',
+) =>
+  request.post<boolean>('/add_position_review', {
+    code,
+    title,
+    date,
+    description,
+  });
+// 删除自选
+export const deletePositionReviewApi = (code: string) =>
+  request.post<boolean>('/delete_position_review', { code });

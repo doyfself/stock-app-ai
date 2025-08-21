@@ -34,6 +34,36 @@ export function formatNumber(num: number) {
   }
 }
 
+/**
+ * 将成交量数值转换为"xx万""xx亿"格式，保留两位小数
+ * @param volume 原始成交量数值（如1234567、8901234567等）
+ * @returns 格式化后的字符串（如"123.46万"、"89.01亿"）
+ */
+export const formatVolume = (volume: number): string => {
+  // 处理非数字或负数情况（成交量通常非负）
+  if (isNaN(volume) || volume < 0) {
+    return "0.00万";
+  }
+
+  // 定义单位转换阈值（1亿 = 10000万 = 10^8，1万 = 10^4）
+  const 亿 = 100000000;
+  const 万 = 10000;
+
+  // 根据数值大小选择单位并转换
+  if (volume >= 亿) {
+    // 大于等于1亿时，转换为“亿”单位
+    const value = volume / 亿;
+    return `${value.toFixed(2)}亿`;
+  } else if (volume >= 万) {
+    // 大于等于1万且小于1亿时，转换为“万”单位
+    const value = volume / 万;
+    return `${value.toFixed(2)}万`;
+  } else {
+    // 小于1万时，直接保留两位小数（不添加单位）
+    return volume.toFixed(2);
+  }
+};
+
 export function calculateMA(data:KlineDataType[], period:number): number[] {
     // 验证输入
     if (!Array.isArray(data) || data.length === 0) {

@@ -1,13 +1,14 @@
-import SearchStock from '@/components/common/SearchStock';
 import { Outlet } from 'react-router-dom';
-
+import HeaderNav from '@/components/common/HeaderNav';
 export default function Home() {
   return (
-    <div>
+    <div className="app-container">
       <header>
-        <SearchStock />
+        <HeaderNav />
       </header>
-      <Outlet />
+      <div className="main-content">
+        <Outlet />
+      </div>
     </div>
   );
 }

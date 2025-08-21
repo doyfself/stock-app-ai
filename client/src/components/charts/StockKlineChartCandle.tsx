@@ -20,14 +20,16 @@ export default function App({
               x2={coordinateX[index]}
               y2={mapToSvg(item.low)}
               stroke={fillColor}
-              strokeWidth={2}
+              strokeWidth={1}
+              key={'line' + index}
             />
             <rect
+              key={'candle' + index}
               x={coordinateX[index] - klineConfig.candleWidth / 2}
               y={isRise ? mapToSvg(item.close) : mapToSvg(item.open)}
               width={klineConfig.candleWidth}
               height={Math.abs(mapToSvg(item.close) - mapToSvg(item.open)) | 1}
-              fill={isRise ? 'red' : 'green'}
+              fill={isRise ? 'white' : klineConfig.fallColor}
               stroke={fillColor}
               strokeWidth={1}
             />

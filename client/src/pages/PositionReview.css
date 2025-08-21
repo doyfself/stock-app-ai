@@ -1,0 +1,9 @@
+.rs-search-area {
+  width: 800px;
+  margin: 200px auto 0;
+}
+.rs-add-button {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+}

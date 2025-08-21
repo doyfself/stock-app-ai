@@ -1,0 +1,44 @@
+ul,
+body,
+html {
+  padding: 0;
+  margin: 0;
+}
+li {
+  list-style: none;
+}
+.flex {
+  display: flex;
+}
+.flex-1 {
+  flex: 1;
+}
+.w100p {
+  width: 100%;
+}
+.h100p {
+  height: 100%;
+}
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.absolute {
+  position: absolute;
+}
+.relative {
+  position: relative;
+}
+
+.app-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+.main-content {
+  width: 100vw;
+  height: 100vh;
+  padding: 66px 10px 10px 10px;
+  box-sizing: border-box;
+}
