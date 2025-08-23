@@ -7,3 +7,13 @@
   right: 20px;
   top: 20px;
 }
+
+.pv-details-container {
+  width: 800px;
+  margin: 0 auto;
+}
+
+.pv-details-container p {
+  line-height: 30px;
+  color: #1576e8;
+}

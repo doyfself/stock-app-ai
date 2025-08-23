@@ -1,5 +1,5 @@
 import type { StockKlineChartVolumeProps } from './types';
-export default function App({
+export default function StockKlineChartTooltip({
   data,
   coordinateX,
   index,

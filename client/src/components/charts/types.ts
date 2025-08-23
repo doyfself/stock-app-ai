@@ -13,6 +13,8 @@ export interface StockKlineChartMainProps {
   code: string;
   width: number;
   height: number;
+  timestamp?: string;
+  limit?: number;
 }
 export interface StockKlineChartChildProps
   extends Pick<StockKlineChartMainProps, 'width' | 'height'> {

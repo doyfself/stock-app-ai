@@ -14,7 +14,13 @@ import klineConfig from './config';
 import { Radio } from 'antd';
 import { useEffect, useState, useMemo } from 'react';
 import { getKlineDataApi, type KlineDataItem } from '@/apis/api';
-export default function App({ code, width, height }: StockKlineChartMainProps) {
+export default function StockKlineChartMain({
+  code,
+  width,
+  height,
+  timestamp = '',
+  limit = 100,
+}: StockKlineChartMainProps) {
   const [data, setData] = useState<KlineDataItem[]>([]);
   const [maxPrice, setMaxPrice] = useState<number>(0);
   const [minPrice, setMinPrice] = useState<number>(0);
@@ -31,7 +37,7 @@ export default function App({ code, width, height }: StockKlineChartMainProps) {
     // 定义获取K线数据的函数
     const fetchKlineData = () => {
       if (code) {
-        getKlineDataApi(code, period).then((response) => {
+        getKlineDataApi(code, period, timestamp, limit).then((response) => {
           if (response && response.data) {
             let newData = response.data;
             newData = newData.slice(Math.max(newData.length - 100, 0));
@@ -58,13 +64,14 @@ export default function App({ code, width, height }: StockKlineChartMainProps) {
     fetchKlineData();
 
     // 设置定时器，每1分钟（60000毫秒）执行一次
-    if (isInStockTradingTime()) {
+    // 如果传入时期，则不启动轮询
+    if (isInStockTradingTime() && !timestamp) {
       intervalId = setInterval(fetchKlineData, 60000);
     }
 
     // 组件卸载时清除定时器，避免内存泄漏
     return () => clearInterval(intervalId);
-  }, [code, period]);
+  }, [code, period, timestamp, limit]);
   // 3. 缓存mapToSvg计算结果，依赖变化时再更新
   const mapToSvg = useMemo(
     () => mapKlineToSvg(height, minPrice, maxPrice),
@@ -84,7 +91,7 @@ export default function App({ code, width, height }: StockKlineChartMainProps) {
 
   return (
     <div style={{ width: width + 'px' }}>
-      <StockKlineChartDetails code={code} />
+      {!timestamp && <StockKlineChartDetails code={code} />}
       <StockKlineChartPeriodSwtich period={period} setPeriod={setPeriod} />
       {maData.length && (
         <StockKlineChartMABar maData={maData} index={selectIndex} />

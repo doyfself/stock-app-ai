@@ -1,7 +1,7 @@
 import type { StockKlineChartChildProps } from './types';
 import klineConfig from './config';
 import { formatNumber } from './util';
-export default function App({
+export default function StockKlineChartBg({
   width,
   height,
   maxPrice,

@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import type { StockKlineChartChildProps } from './types';
 import klineConfig from './config';
-export default function App({
+export default function StockKlineChartStick({
   width,
   height,
   data,

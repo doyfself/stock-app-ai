@@ -13,7 +13,16 @@ import {
 import { useState, useEffect } from 'react';
 import { isInStockTradingTime } from '@/utils/common';
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
-export default function App({ code }: { code: string }) {
+
+const markColors: Record<string, string> = {
+  purple: '#B833A0',
+  red: '#E6353A',
+  yellow: '#F68F26',
+  green: '#47A854',
+  black: '#000000',
+};
+
+export default function StockKlineChartDetails({ code }: { code: string }) {
   const triggerRefresh = useSelectionStore(
     (state) => state.triggerSelectionRefresh,
   );
@@ -80,6 +89,15 @@ export default function App({ code }: { code: string }) {
       }
     });
   };
+  const markColorEvent = (key: string) => {
+    if (details) {
+      addSelectionApi(code, details.name, markColors[key]).then((response) => {
+        if (response && response.data) {
+          triggerRefresh();
+        }
+      });
+    }
+  };
   if (details)
     return (
       <div className="stock-details">
@@ -105,6 +123,17 @@ export default function App({ code }: { code: string }) {
               删自选
             </Button>
           )}
+          <ul className="mark-color-ul">
+            {Object.keys(markColors).map((key) => (
+              <li
+                onClick={() => markColorEvent(key)}
+                key={key}
+                style={{
+                  backgroundColor: markColors[key],
+                }}
+              ></li>
+            ))}
+          </ul>
         </div>
         <div
           className="price"

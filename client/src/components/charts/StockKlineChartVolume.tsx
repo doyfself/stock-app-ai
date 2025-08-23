@@ -19,7 +19,7 @@ export const StockKlineChartVolumeBar = ({
     </div>
   );
 };
-export default function App({
+export default function StockKlineChartVolume({
   data,
   coordinateX,
   width,

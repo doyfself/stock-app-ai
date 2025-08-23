@@ -1,6 +1,6 @@
 import type { StockKlineChartChildProps } from './types';
 import klineConfig from './config';
-export default function App({
+export default function StockKlineChartMA({
   maData,
   coordinateX,
   mapToSvg,

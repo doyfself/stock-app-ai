@@ -16,8 +16,15 @@ export interface KlineDataItem {
   percent: number; // 涨跌幅
   turnoverrate: number; // 换手率
 }
-export const getKlineDataApi = (code: string, period: string) =>
-  request.get<KlineDataItem[]>(`/kline?code=${code}&period=${period}`);
+export const getKlineDataApi = (
+  code: string,
+  period: string,
+  timestamp: string,
+  limit: number,
+) =>
+  request.get<KlineDataItem[]>(
+    `/kline?code=${code}&period=${period}&timestamp=${timestamp}&limit=${limit}`,
+  );
 // 个股详情
 export interface KlineDetailsType {
   name: string; // 股票名称
@@ -66,6 +73,10 @@ export const addSelectionApi = (
   color: string = '',
   remark: string = '',
 ) => request.post<boolean>('/add_selection', { code, name, color, remark });
+
+// 更新自选排序
+export const updateSelectionSortApi = (newOrderCodes: string[]) =>
+  request.post<boolean>('/update_selection_sort', { newOrderCodes });
 // 删除自选
 export const deleteSelectionApi = (code: string) =>
   request.post<boolean>('/delete_selection', { code });
