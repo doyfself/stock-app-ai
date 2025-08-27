@@ -40,3 +40,18 @@
 .mark-color-ul li:hover {
   transform: scale(1.1);
 }
+
+/* 画线start */
+.drawing-button {
+  right: 10px;
+  top: -27px;
+  font-size: 12px;
+  height: 27px;
+  align-items: center;
+  gap: 10px;
+}
+.drawing-button > div {
+  cursor: pointer;
+  color: #1576e8;
+}
+/* 画线end */

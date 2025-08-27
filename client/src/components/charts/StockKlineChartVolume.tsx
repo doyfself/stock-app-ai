@@ -47,6 +47,7 @@ export default function StockKlineChartVolume({
             : klineConfig.fallColor;
           return (
             <rect
+              key={'stock-kline-chart-volumn' + index}
               x={coordinateX[index] - klineConfig.candleWidth / 2}
               y={mapToSvg(item.volume)}
               width={klineConfig.candleWidth}

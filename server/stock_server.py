@@ -5,7 +5,8 @@ import urllib.parse
 import stock_api as sa
 import get_data_from_xueqiu as xq
 import selection_api as sla
-import position_review_api as pr
+import stock_review_api as sra
+import stock_line_api as slia
 
 ROUTES = {
     "/search": sa.query_stock_by_word,
@@ -14,12 +15,18 @@ ROUTES = {
     "/get_selection_detail": xq.get_selection_details,
     "/get_selection": sla.get_selection,  # 获取自选列表
     "/add_selection": sla.add_selection,  # 添加自选
+    "/update_selection_sort": sla.update_selection_sort,  # 自选排序
     "/delete_selection": sla.delete_selection,  # 删除自选
     "/is_selection_exists": sla.is_selection_exists,  # 检查自选是否存在
-    "/get_position_review": pr.get_position_review,  # 获取自选三省列表
-    "/get_single_position_review": pr.get_single_position_review,  # 获取自选三省列表
-    "/add_position_review": pr.add_position_review,  # 添加三省
-    "/delete_position_review": pr.delete_position_review,  # 删除三省
+    # 自选三省
+    "/get_stock_review": sra.get_stock_review,  # 获取自选三省列表
+    "/get_single_stock_review": sra.get_single_stock_review,  # 获取自选三省列表
+    "/add_stock_review": sra.add_stock_review,  # 添加三省
+    "/delete_stock_review": sra.delete_stock_review,  # 删除三省
+    # 画线
+    "/query_lines": slia.query_lines,
+    "/add_line": slia.add_line,
+    "/delete_line": slia.delete_line,
 }
 
 # 配置

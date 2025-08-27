@@ -1,24 +1,21 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { addStockCodePrefix } from '@/utils/common';
-import {
-  getSinglePositionReviewApi,
-  type PositionReviewItem,
-} from '@/apis/api';
+import { getSingleStockReviewApi, type StockReviewItem } from '@/apis/api';
 import StockKlineChartMain from '@/components/charts/StockKlineChartMain';
-export default function PositionReviewDetails() {
+export default function StockReviewDetails() {
   // 获取路由参数id
-  const { id } = useParams<{ id: string }>();
-  const [data, setData] = useState<PositionReviewItem | null>(null);
+  const { id, type } = useParams<{ id: string; type: string }>();
+  const [data, setData] = useState<StockReviewItem | null>(null);
   useEffect(() => {
-    if (id) {
-      getSinglePositionReviewApi(id).then((res) => {
+    if (id && type) {
+      getSingleStockReviewApi(type, id).then((res) => {
         if (res.success) {
-          setData(res.data as PositionReviewItem);
+          setData(res.data as StockReviewItem);
         }
       });
     }
-  }, [id]);
+  }, [type, id]);
   if (data) {
     return (
       <div className="pv-details-container">

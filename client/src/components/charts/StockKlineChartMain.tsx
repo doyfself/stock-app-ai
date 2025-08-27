@@ -4,6 +4,8 @@ import StockKlineChartCandle from './StockKlineChartCandle';
 import StockKlineChartMa from './StockKlineChartMA';
 import StockKlineChartDetails from './StockKlineChartDetails';
 import StockKlineChartTooltip from './StockKlineChartTooltip';
+import StockKlineChartLine from './StockKlineChartLine';
+import StockKlineChartDrawLine from './StockKlineChartDrawLine';
 import { isInStockTradingTime } from '@/utils/common';
 import StockKlineChartVolume, {
   StockKlineChartVolumeBar,
@@ -96,49 +98,69 @@ export default function StockKlineChartMain({
       {maData.length && (
         <StockKlineChartMABar maData={maData} index={selectIndex} />
       )}
-      <svg width={width} height={height}>
-        <StockKlineChartBg
-          width={width}
-          height={height}
-          maxPrice={maxPrice}
-          minPrice={minPrice}
-        />
-        {data.length && (
-          <StockKlineChartCandle
+      <div className="relative">
+        <svg width={width} height={height}>
+          <StockKlineChartBg
+            width={width}
+            height={height}
+            maxPrice={maxPrice}
+            minPrice={minPrice}
+          />
+          {data.length && (
+            <StockKlineChartCandle
+              data={data}
+              coordinateX={coordinateX}
+              mapToSvg={mapToSvg}
+            />
+          )}
+          {maData.length && (
+            <StockKlineChartMa
+              maData={maData}
+              coordinateX={coordinateX}
+              mapToSvg={mapToSvg}
+            />
+          )}
+
+          <StockKlineChartStick
+            width={width}
+            height={height}
+            coordinateX={coordinateX}
+            data={data}
+            maxPrice={maxPrice}
+            minPrice={minPrice}
+            mapToSvg={mapToSvg}
+            hoverCallback={(index, status) => {
+              setSelectIndex(index);
+              setIsHovered(status);
+            }}
+          />
+
+          {!timestamp && (
+            <StockKlineChartLine
+              code={code}
+              period={period}
+              width={width}
+              height={height}
+            />
+          )}
+          <StockKlineChartTooltip
             data={data}
             coordinateX={coordinateX}
-            mapToSvg={mapToSvg}
+            width={width}
+            index={selectIndex}
+            isHovered={isHovered}
+          />
+        </svg>
+        {!timestamp && (
+          <StockKlineChartDrawLine
+            width={width}
+            height={height}
+            code={code}
+            period={period}
           />
         )}
-        {maData.length && (
-          <StockKlineChartMa
-            maData={maData}
-            coordinateX={coordinateX}
-            mapToSvg={mapToSvg}
-          />
-        )}
+      </div>
 
-        <StockKlineChartStick
-          width={width}
-          height={height}
-          coordinateX={coordinateX}
-          data={data}
-          maxPrice={maxPrice}
-          minPrice={minPrice}
-          mapToSvg={mapToSvg}
-          hoverCallback={(index, status) => {
-            setSelectIndex(index);
-            setIsHovered(status);
-          }}
-        />
-        <StockKlineChartTooltip
-          data={data}
-          coordinateX={coordinateX}
-          width={width}
-          index={selectIndex}
-          isHovered={isHovered}
-        />
-      </svg>
       <StockKlineChartVolumeBar index={selectIndex} data={data} />
       <StockKlineChartVolume
         data={data}

@@ -19,10 +19,11 @@ export default function StockKlineChartMA({
         });
         return (
           <polyline
+            key={'stock-kline-chart-ma' + i}
             points={points.slice(0, -1)} // 去掉最后一个逗号
             fill="none"
             stroke={item.color}
-            stroke-width="1"
+            strokeWidth="1"
           />
         );
       })}

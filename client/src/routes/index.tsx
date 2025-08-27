@@ -2,8 +2,8 @@ import type { RouteObject } from 'react-router-dom';
 import Home from '@/pages/Home';
 import App from '@/pages/App';
 import StockDetails from '../pages/StockDetails';
-import PositionReview from '@/pages/PositionReview';
-import PositionReviewDetails from '@/pages/PositionReviewDetails';
+import StockReview from '@/pages/StockReview';
+import StockReviewDetails from '@/pages/StockReviewDetails';
 export const routes: RouteObject[] = [
   {
     path: '/',
@@ -15,12 +15,12 @@ export const routes: RouteObject[] = [
         element: <StockDetails />,
       },
       {
-        path: '/rs',
-        element: <PositionReview />,
+        path: '/sr/:type',
+        element: <StockReview />,
       },
       {
-        path: '/rs/:id',
-        element: <PositionReviewDetails />,
+        path: '/sr/:type/:id',
+        element: <StockReviewDetails />,
       },
     ],
   },

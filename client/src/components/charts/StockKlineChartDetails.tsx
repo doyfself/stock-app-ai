@@ -98,6 +98,7 @@ export default function StockKlineChartDetails({ code }: { code: string }) {
       });
     }
   };
+  // 画线
   if (details)
     return (
       <div className="stock-details">

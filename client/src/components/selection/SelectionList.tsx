@@ -102,14 +102,15 @@ export default function App({ code }: { code: string }) {
   useEffect(() => {
     // 键盘事件处理函数
     const handleKeyDown = (e: KeyboardEvent) => {
-      e.preventDefault(); // 阻止默认行为（如页面滚动）
       let code;
       // 上箭头 (ArrowUp)
       if (e.key === 'ArrowUp' && current > 0) {
+        e.preventDefault(); // 阻止默认行为（如页面滚动）
         code = baseData[current - 1].code;
       }
       // 下箭头 (ArrowDown)
       else if (e.key === 'ArrowDown' && current < baseData.length - 1) {
+        e.preventDefault(); // 阻止默认行为（如页面滚动）
         code = baseData[current + 1].code;
       }
       if (code) {

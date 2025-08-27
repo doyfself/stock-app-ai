@@ -18,3 +18,13 @@ export const useSelectionStore = create<SelectionStore>((set) => ({
       refreshFlag: state.refreshFlag + 1,
     })),
 }));
+
+export const useSelectionLineStore = create<SelectionStore>((set) => ({
+  // 初始标识为0
+  refreshFlag: 0,
+  // 每次调用时更新标识（+1），触发订阅更新
+  triggerSelectionRefresh: () =>
+    set((state) => ({
+      refreshFlag: state.refreshFlag + 1,
+    })),
+}));

@@ -1,4 +1,5 @@
 import klineConfig from './config';
+import { Fragment } from 'react';
 import type { StockKlineChartChildProps } from './types';
 export default function StockKlineChartCandle({
   data,
@@ -13,7 +14,7 @@ export default function StockKlineChartCandle({
           ? klineConfig.riseColor
           : klineConfig.fallColor;
         return (
-          <>
+          <Fragment key={'stock-kline-chart-candle' + index}>
             <line
               x1={coordinateX[index]}
               y1={mapToSvg(item.high)}
@@ -21,10 +22,8 @@ export default function StockKlineChartCandle({
               y2={mapToSvg(item.low)}
               stroke={fillColor}
               strokeWidth={1}
-              key={'line' + index}
             />
             <rect
-              key={'candle' + index}
               x={coordinateX[index] - klineConfig.candleWidth / 2}
               y={isRise ? mapToSvg(item.close) : mapToSvg(item.open)}
               width={klineConfig.candleWidth}
@@ -33,7 +32,7 @@ export default function StockKlineChartCandle({
               stroke={fillColor}
               strokeWidth={1}
             />
-          </>
+          </Fragment>
         );
       })}
     </g>

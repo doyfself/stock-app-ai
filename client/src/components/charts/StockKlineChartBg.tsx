@@ -1,6 +1,7 @@
 import type { StockKlineChartChildProps } from './types';
 import klineConfig from './config';
 import { formatNumber } from './util';
+import { Fragment } from 'react';
 export default function StockKlineChartBg({
   width,
   height,
@@ -25,7 +26,7 @@ export default function StockKlineChartBg({
         const y = klineConfig.padding + (i * candleAreaHeight) / 5;
         const x2 = width - klineConfig.right;
         return (
-          <>
+          <Fragment key={'stock-kline-chart-bg' + i}>
             <line
               x1={x1}
               y1={y}
@@ -44,7 +45,7 @@ export default function StockKlineChartBg({
             >
               {formatNumber(maxPrice - i * distance)}
             </text>
-          </>
+          </Fragment>
         );
       })}
     </g>

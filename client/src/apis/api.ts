@@ -86,32 +86,70 @@ export const isSelectionExistsApi = (code: string) =>
   request.get<boolean>('/is_selection_exists?code=' + code);
 
 // 获取自选三省列表
-export interface PositionReviewItem {
+export interface StockReviewItem {
   id: string; // 股票代码
   code: string; // 股票名称
   title: string;
   date: string; // 股票日期
   description: string; // 描述
 }
-export const getPositionReviewApi = () =>
-  request.get<PositionReviewItem[]>('/get_position_review');
+export const getStockReviewApi = (type: string, keyword: string) =>
+  request.get<StockReviewItem[]>(
+    `/get_stock_review?type=${type}&keyword=${keyword}`,
+  );
 
-export const getSinglePositionReviewApi = (id: string) =>
-  request.get<PositionReviewItem>('/get_single_position_review?id=' + id);
+export const getSingleStockReviewApi = (type: string, id: string) =>
+  request.get<StockReviewItem>(
+    `/get_single_stock_review?id=${id}?type=${type}`,
+  );
 
-// 添加自选
-export const addPositionReviewApi = (
+// 添加
+export const addStockReviewApi = (
+  type: string,
   code: string,
   title: string,
   date: string = '',
   description: string = '',
 ) =>
-  request.post<boolean>('/add_position_review', {
+  request.post<boolean>('/add_stock_review', {
+    type,
     code,
     title,
     date,
     description,
   });
 // 删除自选
-export const deletePositionReviewApi = (code: string) =>
-  request.post<boolean>('/delete_position_review', { code });
+export const deleteStockReviewApi = (type: string, code: string) =>
+  request.post<boolean>('/delete_stock_review', { code, type });
+
+//  画线
+export interface LinePoint {
+  x: number;
+  y: number;
+}
+export type DrawlinesType = {
+  id: string;
+  start: LinePoint;
+  end: LinePoint;
+};
+export interface StockLineType {
+  code: string; // 股票代码
+  period: string; // 周期（如 "day"、"week"、"month" 等）
+  lines: DrawlinesType[];
+  width: number;
+  height: number;
+}
+export const getStockLineApi = (code: string, period: string) =>
+  request.post<StockLineType>('/query_lines', {
+    code,
+    period,
+  });
+
+// 添加
+export const addStockLineApi = (argus: Omit<StockLineType, 'id'>) =>
+  request.post<boolean>('/add_line', {
+    ...argus,
+  });
+
+export const deleteStockLineApi = (code: string, period: string, id: string) =>
+  request.post<boolean>('/delete_line', { code, id, period });

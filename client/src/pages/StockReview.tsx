@@ -8,30 +8,37 @@ import {
   message,
   List,
 } from 'antd';
-import './PositionReview.css';
+import './StockReview.css';
 import type { Moment } from 'moment';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import {
-  getPositionReviewApi,
-  addPositionReviewApi,
-  type PositionReviewItem,
+  getStockReviewApi,
+  addStockReviewApi,
+  type StockReviewItem,
 } from '@/apis/api';
-export default function PositionReview() {
+export default function StockReview() {
+  const { type } = useParams<{ type: string }>();
   const [modalOpen, setModalOpen] = useState(false);
-  const [list, setList] = useState<PositionReviewItem[]>([]);
-  const [showData, setShowData] = useState<PositionReviewItem[]>([]);
+  const [list, setList] = useState<StockReviewItem[]>([]);
+  const [showData, setShowData] = useState<StockReviewItem[]>([]);
+  const [keyword, setKeyword] = useState('');
   const [more, setMore] = useState(false);
   useEffect(() => {
-    getPositionReviewApi().then((res) => {
-      if (res && res.data) {
-        setList(res.data);
-        setShowData(res.data.slice(0, 10));
-        setMore(res.data.length > 10);
-      }
-    });
-  }, []);
-  const onSearch = () => {};
+    if (type) {
+      getStockReviewApi(type, keyword).then((res) => {
+        if (res && res.data) {
+          setList(res.data);
+          setShowData(res.data.slice(0, 10));
+          setMore(res.data.length > 10);
+        }
+      });
+    }
+  }, [type, keyword]);
+  const onSearch = (value: string) => {
+    setKeyword(value);
+  };
   return (
     <div className="relative w100p h100p overflow-hidden">
       <Button
@@ -44,8 +51,10 @@ export default function PositionReview() {
       <ReflectSelectionModal
         modalOpen={modalOpen}
         setModalOpen={setModalOpen}
+        type={type as string}
       />
       <div className="rs-search-area">
+        <h1>{type === 'position' ? '持仓三省' : '欲购三省'}</h1>
         <Input.Search
           placeholder="输入问题"
           allowClear
@@ -60,7 +69,7 @@ export default function PositionReview() {
           dataSource={showData}
           renderItem={(item) => (
             <List.Item>
-              <Link to={'/rs/' + item.id}>{item.title}</Link>
+              <Link to={`/sr/${type}/${item.id}`}>{item.title}</Link>
             </List.Item>
           )}
         />
@@ -72,6 +81,7 @@ export default function PositionReview() {
 interface ReflectSelectionModalProps {
   modalOpen: boolean;
   setModalOpen: (val: boolean) => void;
+  type: string;
 }
 type FieldType = {
   title: string;
@@ -82,12 +92,14 @@ type FieldType = {
 const ReflectSelectionModal = ({
   modalOpen,
   setModalOpen,
+  type,
 }: ReflectSelectionModalProps) => {
   const [messageApi, contextHolder] = message.useMessage();
   const onFinish: FormProps<FieldType>['onFinish'] = (values) => {
     let date = values.date.format('YYYY-MM-DD') + ' 15:00:00';
     date = new Date(date).getTime().toString();
-    addPositionReviewApi(
+    addStockReviewApi(
+      type,
       values.code,
       values.title,
       date,
