@@ -44,6 +44,52 @@ def get_selection(params=None):
         return {"success": False, "message": f"读取自选列表失败: {str(e)}"}, 500
 
 
+def get_selection_remark(params=None):
+    """根据code获取自选备注（GET请求）"""
+    # 参数校验
+    if not params or "code" not in params:
+        return {"success": False, "message": "缺少code参数"}, 400
+
+    # 处理code参数（兼容列表/字符串类型）
+    code_param = params["code"]
+    target_code = (
+        code_param[0].strip().upper()
+        if isinstance(code_param, list)
+        else str(code_param).strip().upper()
+    )
+
+    if not target_code:
+        return {"success": False, "message": "code参数不能为空"}, 400
+
+    try:
+        with open(CSV_FILE, mode="r", newline="", encoding="utf-8") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                # 匹配code（不区分大小写）
+                if row["code"].strip().upper() == target_code:
+                    return {
+                        "success": True,
+                        "data": {
+                            "code": row["code"],
+                            "name": row["name"],
+                            "color": row["color"],
+                            "remark": row["remark"],
+                            "sort": row["sort"],
+                        },
+                        "message": f"获取{target_code}备注成功",
+                    }
+
+        # 未找到对应code的记录
+        return {
+            "success": False,
+            "message": f"未找到code为{target_code}的自选记录",
+        }, 404
+
+    except Exception as e:
+        print(e)
+        return {"success": False, "message": f"获取备注失败: {str(e)}"}, 500
+
+
 def is_selection_exists(params):
     code = params.get("code", [""])[0].strip().upper()
     with open(CSV_FILE, mode="r", newline="", encoding="utf-8") as file:

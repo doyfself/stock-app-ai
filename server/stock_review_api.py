@@ -22,9 +22,6 @@ def init_csv_file(type: str) -> None:
             writer.writeheader()
 
 
-from typing import Optional, Dict, List  # 确保导入必要的类型注解
-
-
 def get_stock_review(params: Optional[Dict] = None) -> Dict:
     """获取指定类型的股票评论列表（支持title模糊搜索）"""
     # 1. 基础参数校验（type参数必传）
@@ -144,7 +141,13 @@ def get_single_stock_review(params: Dict) -> Dict:
     if "type" not in params or "id" not in params:
         return {"success": False, "message": "缺少type或id参数"}, 400
 
-    type = params["type"]
+    # 2. 处理type参数（兼容列表/字符串类型）
+    type_param = params["type"]
+    type = (
+        type_param[0].strip()
+        if isinstance(type_param, list)
+        else str(type_param).strip()
+    )
     target_id = (
         params["id"][0].strip()
         if isinstance(params["id"], list)

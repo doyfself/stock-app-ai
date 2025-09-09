@@ -134,41 +134,43 @@ export default function App({ code }: { code: string }) {
           <span>涨幅/现价</span>
         </div>
         <ul>
-          {dynamicData.map((item, index) => {
-            return (
-              <li
-                className={index === current ? 'active' : ''}
-                onClick={() => scanDetails(baseData[index].code)}
-                key={item.code}
-              >
-                <div className="flex">
-                  <div className="selection-number">
-                    {index + 1}
-                    <div onClick={(e) => sortSelection(e, index)}>
-                      <SwapOutlined />
+          {dynamicData &&
+            dynamicData.length &&
+            dynamicData.map((item, index) => {
+              return (
+                <li
+                  className={index === current ? 'active' : ''}
+                  onClick={() => scanDetails(baseData[index].code)}
+                  key={item.code}
+                >
+                  <div className="flex">
+                    <div className="selection-number">
+                      {index + 1}
+                      <div onClick={(e) => sortSelection(e, index)}>
+                        <SwapOutlined />
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        color:
+                          (baseData[index] && baseData[index].color) || '#000',
+                      }}
+                    >
+                      <div>{item.name}</div>
+                      <div>{item.code}</div>
                     </div>
                   </div>
                   <div
                     style={{
-                      color:
-                        (baseData[index] && baseData[index].color) || '#000',
+                      color: item.percent >= 0 ? 'red' : 'green',
                     }}
                   >
-                    <div>{item.name}</div>
-                    <div>{item.code}</div>
+                    <div>{item.percent}%</div>
+                    <div>{item.current}</div>
                   </div>
-                </div>
-                <div
-                  style={{
-                    color: item.percent >= 0 ? 'red' : 'green',
-                  }}
-                >
-                  <div>{item.percent}%</div>
-                  <div>{item.current}</div>
-                </div>
-              </li>
-            );
-          })}
+                </li>
+              );
+            })}
         </ul>
       </div>
       <Modal

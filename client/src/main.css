@@ -13,11 +13,23 @@ li {
 .flex-1 {
   flex: 1;
 }
+.flex-col {
+  flex-direction: column;
+}
+.gap-10 {
+  gap: 10px;
+}
+.gap-20 {
+  gap: 20px;
+}
 .w100p {
   width: 100%;
 }
 .h100p {
   height: 100%;
+}
+.overflow-auto {
+  overflow: auto;
 }
 .overflow-hidden {
   overflow: hidden;

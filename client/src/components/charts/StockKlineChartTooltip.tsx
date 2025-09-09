@@ -1,4 +1,5 @@
 import type { StockKlineChartVolumeProps } from './types';
+import klineConfig from './config';
 export default function StockKlineChartTooltip({
   data,
   coordinateX,
@@ -58,7 +59,11 @@ export default function StockKlineChartTooltip({
             {/* 内容：左对齐，跟在标题后面 */}
             <text
               fontSize={12}
-              fill="#1777ff"
+              fill={
+                item.percent >= 0
+                  ? klineConfig.riseColor
+                  : klineConfig.fallColor
+              }
               textAnchor="start" // 左对齐
               dx={10} // 标题和内容的间距
             >

@@ -53,9 +53,13 @@ export interface SelectionItem {
   name: string; // 股票名称
   color: string; // 股票颜色
   remark: string; // 备注
+  sort: number; // 排序
 }
 export const getSelectionApi = () =>
   request.get<SelectionItem[]>('/get_selection');
+
+export const getSelectionRemarkApi = (code: string) =>
+  request.get<SelectionItem>('/get_selection_remark?code=' + code);
 
 export type SelectionDetailsItem = Pick<
   KlineDetailsType,
@@ -100,7 +104,7 @@ export const getStockReviewApi = (type: string, keyword: string) =>
 
 export const getSingleStockReviewApi = (type: string, id: string) =>
   request.get<StockReviewItem>(
-    `/get_single_stock_review?id=${id}?type=${type}`,
+    `/get_single_stock_review?id=${id}&type=${type}`,
   );
 
 // 添加
@@ -121,6 +125,22 @@ export const addStockReviewApi = (
 // 删除自选
 export const deleteStockReviewApi = (type: string, code: string) =>
   request.post<boolean>('/delete_stock_review', { code, type });
+
+//  大盘分析
+export interface MarketAnalysisItem {
+  [key: string]: null | {
+    date: string;
+    analysis: string;
+  };
+}
+export const getAnalysisApi = (code: string) =>
+  request.get<MarketAnalysisItem>(`/get_analysis_info?code=${code}`);
+
+export const addAnalysisApi = (code: string, analysis: string) =>
+  request.post<boolean>('/add_analysis_info', {
+    analysis,
+    code,
+  });
 
 //  画线
 export interface LinePoint {

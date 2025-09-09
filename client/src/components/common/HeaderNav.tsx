@@ -6,6 +6,7 @@ export default function HeaderNav() {
     <div className="header-nav">
       <div className="flex-1"></div>
       <SearchStock />
+      <Link to="/market">大盘分析</Link>
       <Link to="/sr/position">持仓三省</Link>
       <Link to="sr/want">欲购三省</Link>
       <Link to="/kline/SH000001">自选</Link>

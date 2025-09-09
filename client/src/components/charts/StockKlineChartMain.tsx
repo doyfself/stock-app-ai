@@ -6,6 +6,7 @@ import StockKlineChartDetails from './StockKlineChartDetails';
 import StockKlineChartTooltip from './StockKlineChartTooltip';
 import StockKlineChartLine from './StockKlineChartLine';
 import StockKlineChartDrawLine from './StockKlineChartDrawLine';
+import StockRemark from './StockRemark';
 import { isInStockTradingTime } from '@/utils/common';
 import StockKlineChartVolume, {
   StockKlineChartVolumeBar,
@@ -169,6 +170,7 @@ export default function StockKlineChartMain({
         index={selectIndex}
         isHovered={isHovered}
       />
+      {!timestamp && <StockRemark code={code} />}
     </div>
   );
 }

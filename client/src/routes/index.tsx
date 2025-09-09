@@ -4,6 +4,7 @@ import App from '@/pages/App';
 import StockDetails from '../pages/StockDetails';
 import StockReview from '@/pages/StockReview';
 import StockReviewDetails from '@/pages/StockReviewDetails';
+import MarketAnalysis from '@/pages/MarketAnalysis';
 export const routes: RouteObject[] = [
   {
     path: '/',
@@ -13,6 +14,10 @@ export const routes: RouteObject[] = [
       {
         path: 'kline/:id',
         element: <StockDetails />,
+      },
+      {
+        path: 'market',
+        element: <MarketAnalysis />,
       },
       {
         path: '/sr/:type',

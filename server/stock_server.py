@@ -7,6 +7,7 @@ import get_data_from_xueqiu as xq
 import selection_api as sla
 import stock_review_api as sra
 import stock_line_api as slia
+import market_analysis_api as maa
 
 ROUTES = {
     "/search": sa.query_stock_by_word,
@@ -14,6 +15,7 @@ ROUTES = {
     "/stock_details": xq.get_stock_details,
     "/get_selection_detail": xq.get_selection_details,
     "/get_selection": sla.get_selection,  # 获取自选列表
+    "/get_selection_remark": sla.get_selection_remark,
     "/add_selection": sla.add_selection,  # 添加自选
     "/update_selection_sort": sla.update_selection_sort,  # 自选排序
     "/delete_selection": sla.delete_selection,  # 删除自选
@@ -27,6 +29,9 @@ ROUTES = {
     "/query_lines": slia.query_lines,
     "/add_line": slia.add_line,
     "/delete_line": slia.delete_line,
+    # 大盘分析
+    "/get_analysis_info": maa.get_analysis_info,
+    "/add_analysis_info": maa.add_analysis_info,
 }
 
 # 配置

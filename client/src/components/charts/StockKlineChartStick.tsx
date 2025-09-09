@@ -78,105 +78,104 @@ export default function StockKlineChartStick({
 
   return (
     <>
-      {isHovered && data.length && (
-        <g
-          ref={chartGroupRef}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={handleMouseLeave}
-          onMouseMove={handleMouseMove}
-        >
-          {/* 添加透明背景矩形作为事件触发区域 */}
-          <rect
-            x={0}
-            y={0}
-            width={width}
-            height={height}
-            fill="transparent"
-            style={{ pointerEvents: 'all' }}
-          />
-
-          {/* 这里可以添加K线图的其他元素 */}
-
-          {/* X轴虚线 - 吸附到最近的柱子，只在鼠标移入时显示 */}
-          <line
-            x1={0}
-            y1={constrainedMouseY}
-            x2={width - klineConfig.right}
-            y2={constrainedMouseY}
-            stroke="gray"
-            strokeWidth="1"
-            strokeDasharray="4 2"
-          />
-
-          {/* Y轴虚线 - 跟随鼠标垂直移动，只在鼠标移入时显示 */}
-          <line
-            x1={coordinateX[activeIndex]}
-            y1={0}
-            x2={coordinateX[activeIndex]}
-            y2={height}
-            stroke="gray"
-            strokeWidth="1"
-            strokeDasharray="4 2"
-          />
-          {/* 时间 - 显示在X轴下侧，随鼠标移动 */}
-          <g>
-            <rect
-              x={coordinateX[activeIndex] - 60}
-              y={height - 20}
-              rx={3}
-              ry={3}
-              width={120}
-              height={20}
-              fill="#ddd"
-              stroke="#ddd"
-              strokeWidth="1"
-            />
-            <text
-              x={coordinateX[activeIndex]}
-              y={height - 10}
-              fontSize="12"
-              fill="black"
-              textAnchor="middle" // 水平居中
-              dominantBaseline="middle" // 垂直居中
-            >
-              {data[activeIndex].date}
-            </text>
-          </g>
-
-          {/* 价格标签 - 显示在Y轴右侧，随鼠标移动 */}
-          <g>
-            {/* 价格标签背景 */}
-            <rect
-              x={width - klineConfig.right - 5}
-              y={constrainedMouseY - 10}
-              rx={3}
-              ry={3}
-              width={60}
-              height={20}
-              fill="white"
+      <g
+        ref={chartGroupRef}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={handleMouseLeave}
+        onMouseMove={handleMouseMove}
+      >
+        {/* 添加透明背景矩形作为事件触发区域 */}
+        <rect
+          x={0}
+          y={0}
+          width={width}
+          height={height}
+          fill="transparent"
+          style={{ pointerEvents: 'all' }}
+        />
+        {isHovered && data.length && (
+          <>
+            {/* X轴虚线 - 吸附到最近的柱子，只在鼠标移入时显示 */}
+            <line
+              x1={0}
+              y1={constrainedMouseY}
+              x2={width - klineConfig.right}
+              y2={constrainedMouseY}
               stroke="gray"
               strokeWidth="1"
+              strokeDasharray="4 2"
             />
-            {/* 价格文本 */}
-            <text
-              x={width - klineConfig.right}
-              y={constrainedMouseY + 4}
-              fontSize="12"
-              fill="black"
-            >
-              {currentPrice.toFixed(2)}
-            </text>
-          </g>
 
-          {/* 坐标轴交点指示器 */}
-          <circle
-            cx={coordinateX[activeIndex]}
-            cy={constrainedMouseY}
-            r="4"
-            fill="purple"
-          />
-        </g>
-      )}
+            {/* Y轴虚线 - 跟随鼠标垂直移动，只在鼠标移入时显示 */}
+            <line
+              x1={coordinateX[activeIndex]}
+              y1={0}
+              x2={coordinateX[activeIndex]}
+              y2={height}
+              stroke="gray"
+              strokeWidth="1"
+              strokeDasharray="4 2"
+            />
+            {/* 时间 - 显示在X轴下侧，随鼠标移动 */}
+            <g>
+              <rect
+                x={coordinateX[activeIndex] - 60}
+                y={height - 20}
+                rx={3}
+                ry={3}
+                width={120}
+                height={20}
+                fill="#ddd"
+                stroke="#ddd"
+                strokeWidth="1"
+              />
+              <text
+                x={coordinateX[activeIndex]}
+                y={height - 10}
+                fontSize="12"
+                fill="black"
+                textAnchor="middle" // 水平居中
+                dominantBaseline="middle" // 垂直居中
+              >
+                {data[activeIndex].date}
+              </text>
+            </g>
+
+            {/* 价格标签 - 显示在Y轴右侧，随鼠标移动 */}
+            <g>
+              {/* 价格标签背景 */}
+              <rect
+                x={width - klineConfig.right - 5}
+                y={constrainedMouseY - 10}
+                rx={3}
+                ry={3}
+                width={60}
+                height={20}
+                fill="white"
+                stroke="gray"
+                strokeWidth="1"
+              />
+              {/* 价格文本 */}
+              <text
+                x={width - klineConfig.right}
+                y={constrainedMouseY + 4}
+                fontSize="12"
+                fill="black"
+              >
+                {currentPrice.toFixed(2)}
+              </text>
+            </g>
+
+            {/* 坐标轴交点指示器 */}
+            <circle
+              cx={coordinateX[activeIndex]}
+              cy={constrainedMouseY}
+              r="4"
+              fill="purple"
+            />
+          </>
+        )}
+      </g>
     </>
   );
 }
