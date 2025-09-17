@@ -137,7 +137,7 @@ export default function StockKlineChartStick({
                 textAnchor="middle" // 水平居中
                 dominantBaseline="middle" // 垂直居中
               >
-                {data[activeIndex].date}
+                {data[activeIndex] ? data[activeIndex].date : ''}
               </text>
             </g>
 

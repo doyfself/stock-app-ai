@@ -215,7 +215,9 @@ const StockKlineChartMABar = ({ index, maData }: StockKlineChartBarProps) => {
         return (
           <span key={item.period} style={{ color: item.color }}>
             {item.name}:{' '}
-            {maData[i][index] !== -1 ? maData[i][index].toFixed(2) : 'N/A'}{' '}
+            {maData[i][index] && maData[i][index] !== -1
+              ? maData[i][index].toFixed(2)
+              : 'N/A'}{' '}
           </span>
         );
       })}
